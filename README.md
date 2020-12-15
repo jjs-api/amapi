@@ -57,7 +57,7 @@
 
 
 ### Section 2. Automated testing using Postman.
-The reason for selecting Postman for this task, is I've being using it for API testing since 2014 so I have a large amount of experience using  it. In turn I can work very fast with it, and create, organise and manage a lot of requests and automaated tests simultaneously on different environments without tripping myself up. 
+The reason for selecting Postman Packaged App for this task, is I've being using it for API testing since 2014 so I have a large amount of experience using  it. In turn I can work very fast with it, and create, organise and manage a lot of requests and automaated tests simultaneously on different environments without tripping myself up. 
 
 I have exported the Postman json files for tests, dev encironment and prod environment. I have added a delay of 500ms, I've noticed especially on prod environment a delay is required for the tests to run smoothly. This manifests mostly on REF: 18.5
 
