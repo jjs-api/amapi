@@ -1,11 +1,11 @@
-# READ FIRST: REF codes are direct references to Postman test suite, where folders and requests are indexed clearly.
+### READ FIRST: REF codes are direct references to Postman test suite, where folders and requests are indexed clearly.
 
 # Section 1. Meeting acceptance criteria
 
 The acceptance criteria that the API must meet are the following:
 • A user can:
 	◦ List all customers in the database. ↓
-### REF: 7. Query/CustomerReadModels/onCreate
+###### REF: 7. Query/CustomerReadModels/onCreate
 
 	◦ Get full customer information, including a photo URL. ↓
 ### REF: 6. Queries/CustomerReadModel/onCreate & 7. Query/CustomerReadModels/onCreate 
