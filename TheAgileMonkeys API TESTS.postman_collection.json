@@ -1,0 +1,4865 @@
+{
+	"info": {
+		"_postman_id": "f6a7b900-e138-4908-9f49-5f32d12db28d",
+		"name": "TheAgileMonkeys API TESTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. auth/sign-in",
+			"item": [
+				{
+					"name": "1.1 {{url}}/auth/sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b034b1c1-cd92-4bab-b4ed-0107b458fedb",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);\r",
+									"\r",
+									"pm.test('Has accessToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('accessToken');\r",
+									"});\r",
+									"pm.test('Has expiresIn', function() {\r",
+									"  pm.expect(jsonData).to.have.property('expiresIn');\r",
+									"});\r",
+									"pm.test('Has refreshToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"});\r",
+									"pm.test('Has tokenType', function() {\r",
+									"  pm.expect(jsonData).to.have.property('tokenType');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"clientId\": \"{{clientID}}\",\r\n \"username\": \"admin@theagilemonkeys.com\",\r\n \"password\": \"Admin.2020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/sign-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "2. Mutations/Create/SaveUser",
+			"item": [
+				{
+					"name": "2.1 mutation/SaveUser create userid:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2b375e9e-6116-467e-827a-4981dbb62a6e",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"saveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@theagilemonkeys.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7a496e8e-209d-446c-a87d-f47d070a4b18",
+								"exec": [
+									"pm.environment.set('randomNo1', Math.floor(Math.random() * 50000));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\", \r\n        password: \"Admin.2020\",\r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 mutation/SaveUser create userid:1 repeat/check msg",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d86c4b2-1051-41ef-856b-b27b2ce0dbda",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has errors', function() {\r",
+									"  pm.expect(jsonData).to.have.property('errors');\r",
+									"});\r",
+									"pm.test('has message', function() {\r",
+									"  pm.expect(jsonData.errors[0]).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"saveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.errors[0].message).to.eql(\"An account with the given email already exists.\");\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@theagilemonkeys.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a9feec4c-350e-4cd3-a61b-d88db514348a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\", \r\n        password: \"Admin.2020\",\r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 mutation/SaveUser create userid:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6109d03b-0ce1-4835-b3b6-9b465f876696",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo2 = pm.environment.get('randomNo2');\r",
+									"pm.environment.set('userId2', \"userId\"+randomNo2+\"@theagilemonkeys.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7ab509a6-a4ee-44e9-a100-38deb1b07a10",
+								"exec": [
+									"pm.environment.set('randomNo2', Math.floor(Math.random() * 50000));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo2}}@theagilemonkeys.com\", \r\n        password: \"Admin.2020\", \r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 mutation/SaveUser create userid:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62c03bb7-7012-4b7b-a52a-dbe37c6dcbd1",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo3 = pm.environment.get('randomNo3');\r",
+									"pm.environment.set('userId3', \"userId\"+randomNo3+\"@theagilemonkeys.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "06929d79-8012-41bd-a1c8-06454b063208",
+								"exec": [
+									"pm.environment.set('randomNo3', Math.floor(Math.random() * 50000));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo3}}@theagilemonkeys.com\", \r\n        password: \"Admin.2020\",\r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "3. Queries/UserReadModel/onCreate",
+			"item": [
+				{
+					"name": "3.1 query/UserReadModel get userid:1 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "295cd2e8-8b9d-4bd8-b9d2-2374557e7106",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"Admin\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId1}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 query/UserReadModel get userid:2 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d012795b-abb9-4b19-91ba-38cb157d3acb",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"Admin\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId2}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 query/UserReadModel get userid:3 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6c454af-ade2-435e-b2e5-cb0db1743d8f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"Admin\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId3}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "4. Query/UserReadModels/onCreate",
+			"item": [
+				{
+					"name": "4.1 query/UserReadModels get all users data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a37886ff-0edd-4c18-9ac8-b4721a9dfbdc",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModels');\r",
+									"});\r",
+									"\r",
+									"//check user 1 data\r",
+									"pm.test('has id1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.UserReadModels[0].id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].id).to.contain(\"@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has role1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('role');\r",
+									"});\r",
+									"    pm.test(\"surname1 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].role).to.eql(\"Admin\");\r",
+									"});\r",
+									"\r",
+									"//check user 2 data\r",
+									"pm.test('has id2', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[1]).to.have.property('id');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.UserReadModels[1].id).to.eql(pm.environment.get(\"userId2\"));\r",
+									"    pm.expect(jsonData.data.UserReadModels[1].id).to.contain(\"@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has role2', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[1]).to.have.property('role');\r",
+									"});\r",
+									"    pm.test(\"surname2 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[1].role).to.eql(\"Admin\");\r",
+									"});\r",
+									"\r",
+									"//check user3 data\r",
+									"\r",
+									"pm.test('has id3', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[2]).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.UserReadModels[2].id).to.eql(pm.environment.get(\"userId3\"));\r",
+									"    pm.expect(jsonData.data.UserReadModels[2].id).to.contain(\"@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has role3', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[2]).to.have.property('role');\r",
+									"});\r",
+									"    pm.test(\"surname3 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[2].role).to.eql(\"Admin\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModels {\r\n        id, \r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "5. Mutations/SaveCustomer/Create",
+			"item": [
+				{
+					"name": "5.1 mutation/SaveCustomer create customer id:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "95b94dd0-9509-472f-bbd9-872dc6f69211",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId1}},\r\n        name: \"{{customerName1}}\", \r\n        surname: \"{{customerSurname1}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"{{customerPhotoUrl1}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 mutation/SaveCustomer create customer id:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "030bd081-1b5e-445c-935d-e4130ade4679",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId2}},\r\n        name: \"{{customerName2}}\", \r\n        surname: \"{{customerSurname2}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"{{customerPhotoUrl2}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 mutation/SaveCustomer create customer id:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d0721e28-fc07-4ab2-b73b-ea80988caab3",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId3}},\r\n        name: \"{{customerName3}}\", \r\n        surname: \"{{customerSurname3}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"{{customerPhotoUrl3}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "6. Queries/CustomerReadModel/onCreate",
+			"item": [
+				{
+					"name": "6.1 query/CustomerReadModel get customerId:1 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a770b50f-5e17-4a0d-8a09-cf4681983d2b",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(pm.environment.get(\"customerName1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(pm.environment.get(\"customerSurname1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:1) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.2 query/CustomerReadModel get customerId:2 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7594d595-f8bb-40ff-a211-9f964ededa72",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(pm.environment.get(\"customerName2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(pm.environment.get(\"customerSurname2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:2) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.3 query/CustomerReadModel get customerId:3 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f92caf3c-29ba-4a65-bb19-4ab0931cc504",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(pm.environment.get(\"customerName3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(pm.environment.get(\"customerSurname3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:3) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "7. Query/CustomerReadModels/onCreate",
+			"item": [
+				{
+					"name": "7.1 query/CustomerReadModels get all customers data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "42455e99-2a6c-4806-972b-062199529a12",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"    pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"    pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"//check customer 1 data\r",
+									"pm.test('has name1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name1 response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModels[0].name).to.eql(pm.environment.get(\"customerName1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname1 response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModels[0].surname).to.eql(pm.environment.get(\"customerSurname1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl1 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId1 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//check customer 2 data\r",
+									"pm.test('has name2', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].name).to.eql(pm.environment.get(\"customerName2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].surname).to.eql(pm.environment.get(\"customerSurname2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"//check customer 3 data\r",
+									"pm.test('has name3', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name3 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].name).to.eql(pm.environment.get(\"customerName3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname3', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname3 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].surname).to.eql(pm.environment.get(\"customerSurname3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl3', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl3 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId3', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId3 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels \r\n  {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "8. Mutations/SaveCustomer/Update",
+			"item": [
+				{
+					"name": "8.1 mutation/SaveCustomer update customer id:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b444c2e-3a08-4631-90e1-5b52040513cd",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId1}},\r\n        name: \"+{{customerName1}}\", \r\n        surname: \"+{{customerSurname1}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"+{{customerPhotoUrl1}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.2 mutation/SaveCustomer update customer id:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "edf8dac8-828f-4d25-9f64-a83a5574b3cb",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId2}},\r\n        name: \"+{{customerName2}}\", \r\n        surname: \"+{{customerSurname2}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"+{{customerPhotoUrl2}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.3 mutation/SaveCustomer update customer id:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f225b0f9-ad53-4015-bb34-3c68dbe50b7e",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId3}},\r\n        name: \"+{{customerName3}}\", \r\n        surname: \"+{{customerSurname3}}\", \r\n        #according to schema, key should read 'photoUrl' not 'photo'        \r\n        photo: \"+{{customerPhotoUrl3}}\" \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "9. Queries/CustomerReadModel/onUpdate",
+			"item": [
+				{
+					"name": "9.1 query/CustomerReadModel get updated customerId:1 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "534bf6da-55ce-4a1d-914d-093adbdb69e2",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(\"+\"+pm.environment.get(\"customerName1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(\"+\"+pm.environment.get(\"customerSurname1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(\"+\"+pm.environment.get(\"customerPhotoUrl1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:1) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.2 query/CustomerReadModel get updated customerId:2 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6297ad6a-7aae-4eee-b161-79087ac8e66d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(\"+\"+pm.environment.get(\"customerName2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(\"+\"+pm.environment.get(\"customerSurname2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(\"+\"+pm.environment.get(\"customerPhotoUrl2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:2) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.3 query/CustomerReadModel get updated customerId:3 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ac38861-28fc-4109-b317-ab7e8cb8372f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(\"+\"+pm.environment.get(\"customerName3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(\"+\"+pm.environment.get(\"customerSurname3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.photoUrl).to.eql(\"+\"+pm.environment.get(\"customerPhotoUrl3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:3) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "10. Query/CustomerReadModels/onUpdate",
+			"item": [
+				{
+					"name": "10.1 query/CustomerReadModels get all customers updated data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9e6dbda-744e-45ed-8080-8af42fc2fc02",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"    pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"    pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"//check customer 1 data\r",
+									"pm.test('has name1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name1 response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModels[0].name).to.eql(pm.environment.get(\"customerName1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"+name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname1 response is correct test\", function () {\r",
+									"  //pm.expect(jsonData.data.CustomerReadModels[0].surname).to.eql(pm.environment.get(\"customerSurname1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"+surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl1 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"+photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId1 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//check customer 2 data\r",
+									"pm.test('has name2', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].name).to.eql(pm.environment.get(\"customerName2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"+name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].surname).to.eql(pm.environment.get(\"customerSurname2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"+surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl2\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"+photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId2', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[1]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId2 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[1].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"//check customer 3 data\r",
+									"pm.test('has name', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].name).to.eql(pm.environment.get(\"customerName3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"+name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].surname).to.eql(pm.environment.get(\"customerSurname3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"+surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has photoUrl', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('photoUrl');\r",
+									"});\r",
+									"pm.test(\"photoUrl response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].photoUrl).to.eql(pm.environment.get(\"customerPhotoUrl3\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].photoUrl).to.contain(\"+photo\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[2]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[2].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.contain(\"theagilemonkeys\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "11. Mutations/DeleteCustomer/Delete",
+			"item": [
+				{
+					"name": "11.1 mutation/DeleteCustomer delete customer id:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47e89000-d233-4a15-8c51-404065b9b2da",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteCustomer(input: { \r\n        id: {{customerId1}},       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11.2 mutation/DeleteCustomer delete customer id:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3819d61c-7958-4ffe-a10d-22b03b49c508",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteCustomer(input: { \r\n        id: {{customerId2}},       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11.3 mutation/DeleteCustomer delete customer id:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "09c40c40-5122-421e-bcdb-ed5ea21634ba",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteCustomer(input: { \r\n        id: {{customerId3}},       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "20987516-66e7-4b4d-88ff-42628f56437e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "cdc38631-ac9b-48a1-a817-a33f38cc79ef",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "12. Queries/CustomerReadModel/onDelete",
+			"item": [
+				{
+					"name": "12.1 query/CustomerReadModel after delete customerId:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "718718de-516a-4095-9ab1-bc022c8425f8",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has null', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.eql(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:1) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.2 query/CustomerReadModel after delete customerId:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e1eedce8-0f2e-4979-b619-5e1430526f5b",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"pm.test('has null', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.eql(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:2) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.3 query/CustomerReadModel after delete customerId:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "55c48800-e772-4550-89cb-be2b62549914",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"pm.test('has null', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.eql(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:3) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "42aa724a-ca59-4a3c-88f2-389e17e47341",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "80557d1d-51e2-471e-b754-d2e017a5e686",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "13. Query/CustomerReadModels/onDelete",
+			"item": [
+				{
+					"name": "13.1 query/CustomerReadModels get all customers onDelete (none should exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f1cb9d0-91dc-4c5b-9ac1-2ad02fc60559",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"pm.test('has []', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModels).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "14. ChangeUserRole/Tests",
+			"item": [
+				{
+					"name": "14.1 query/UserReadModel get initial userid:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8dc9aac8-4242-4c3e-bb20-df64497f214d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"Admin\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId1}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.2 mutation/ChangeUserRole change userid:1 role Admin -> User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "70a64db7-2f02-4b56-9d8c-805c35e22b20",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has ChangeUserRole', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('ChangeUserRole');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ChangeUserRole response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.ChangeUserRole).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@agilemonkeys.com\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0cdc48b4-9939-4d52-93f1-f6f00d8e2385",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  ChangeUserRole(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\", \r\n        role: \"User\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.3 query/UserReadModel get changed userid:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4bb101c4-1e3c-42da-b762-3105af7b692c",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"User\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId1}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.4 mutation/ChangeUserRole change userid:1 role again User -> Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9bb7b57c-fb30-4dee-803b-47dd8c2c2ff7",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has ChangeUserRole', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('ChangeUserRole');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ChangeUserRole response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@agilemonkeys.com\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "25f04a4d-9db4-4dab-9380-6429e2748afc",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  ChangeUserRole(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\", \r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.5 query/UserReadModel get changed userid:1 again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0cb6ca4-15e2-46e1-9d9d-e6cf46808301",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"User\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId1}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "15. ChangeUserPassword/Test (unknown scope but example added)",
+			"item": [
+				{
+					"name": "15.1 mutation/SaveUser attempt userid:1 change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e24f05e-0c36-4967-8f81-82dcaf6c2c03",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@agilemonkeys.com\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "88dce89a-085c-497e-825c-0f04ed132b7b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\", \r\n        password: \"Admin.20201\",\r\n        role: \"User\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "15.2 query/UserReadModel check userid:1 password change",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e800dc7b-7d97-4dba-afb9-4ca21d4681a6",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has id', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.id).to.eql(pm.environment.get(\"userId1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has role', function() {\r",
+									"  pm.expect(jsonData.data.UserReadModel).to.have.property('role');\r",
+									"});\r",
+									"pm.test(\"role response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.UserReadModel.role).to.eql(\"User\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModel (id: \"{{userId1}}\") {\r\n        id,\r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "16. Mutations/UserReadModel/Delete",
+			"item": [
+				{
+					"name": "16.1 mutation/UserReadModel delete user id:1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b814ad8b-edc7-4faf-af8d-fece5bf66201",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteUser(input: { \r\n        username: \"userId{{randomNo1}}@theagilemonkeys.com\",       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16.2 mutation/UserReadModel delete user id:2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "151eacdd-bd5c-4c56-a74d-4d66149b8620",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteUser(input: { \r\n        username: \"userId{{randomNo2}}@theagilemonkeys.com\",       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16.3 mutation/UserReadModel delete user id:3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8cf4a125-da70-46dc-bf4f-40b7df25d794",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteUser(input: { \r\n        username: \"userId{{randomNo3}}@theagilemonkeys.com\",       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "17. Query/UserReadModels/onDelete",
+			"item": [
+				{
+					"name": "17.1 {{url}}/graphql delete user id:1 ignore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "12ccbbdc-fdb7-4e6f-93ea-5a8c369c7b99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteUser(input: { \r\n        username: \"userId12205@theagilemonkeys.com\",       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "17.2 query/UserReadModels get all users - only 'admin@theagilemonkeys.com' should exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54429881-35d5-42a1-95b8-dae3e3956975",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModels');\r",
+									"});\r",
+									"\r",
+									"//check customer 1 data\r",
+									"pm.test('has id1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].id).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has role1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('role');\r",
+									"});\r",
+									"    pm.test(\"surname1 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].role).to.eql(\"Admin\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModels {\r\n        id, \r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "18. Add customer with newly created Admin end2end workflow",
+			"item": [
+				{
+					"name": "18.1 {{url}}/auth/sign-in Master Admin account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa92e150-c45c-44ec-a481-681f489959b8",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);\r",
+									"\r",
+									"pm.test('Has accessToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('accessToken');\r",
+									"});\r",
+									"pm.test('Has expiresIn', function() {\r",
+									"  pm.expect(jsonData).to.have.property('expiresIn');\r",
+									"});\r",
+									"pm.test('Has refreshToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"});\r",
+									"pm.test('Has tokenType', function() {\r",
+									"  pm.expect(jsonData).to.have.property('tokenType');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"clientId\": \"{{clientID}}\",\r\n \"username\": \"admin@theagilemonkeys.com\",\r\n \"password\": \"Admin.2020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/sign-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.2 mutation/SaveUser create userid:4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1a94426b-a6f1-4977-8a39-b9cf9a5aa850",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"saveUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo1 = pm.environment.get('randomNo1');\r",
+									"pm.environment.set('userId1', \"userId\"+randomNo1+\"@theagilemonkeys.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b85a32d-a7dd-4cc5-83e3-c423a915aad5",
+								"exec": [
+									"pm.environment.set('randomNo4', Math.floor(Math.random() * 50000));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveUser(input: { \r\n        username: \"userId{{randomNo4}}@theagilemonkeys.com\", \r\n        password: \"Admin.2020\",\r\n        role: \"Admin\"\r\n    })\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.3 {{url}}/auth/sign-in with userId4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a77c8d4d-d6af-43cd-9afc-ee0615faaff2",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);\r",
+									"\r",
+									"pm.test('Has accessToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('accessToken');\r",
+									"});\r",
+									"pm.test('Has expiresIn', function() {\r",
+									"  pm.expect(jsonData).to.have.property('expiresIn');\r",
+									"});\r",
+									"pm.test('Has refreshToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"});\r",
+									"pm.test('Has tokenType', function() {\r",
+									"  pm.expect(jsonData).to.have.property('tokenType');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"clientId\": \"{{clientID}}\",\r\n \"username\": \"userId{{randomNo4}}@theagilemonkeys.com\",\r\n \"password\": \"Admin.2020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/sign-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.4 mutation/SaveCustomer create customer id:4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "103557d6-348a-4f53-9c7a-f8b0465e10cb",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has SaveCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('SaveCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"SaveCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.SaveCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"let randomNo4 = pm.environment.get('randomNo4');\r",
+									"pm.environment.set('userId4', \"userId\"+randomNo4+\"@theagilemonkeys.com\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  SaveCustomer(input: { \r\n        id: {{customerId4}},\r\n        name: \"{{customerName4}}\", \r\n        surname: \"{{customerSurname4}}\",         \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.5 query/CustomerReadModel get customerId:4 data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c21d9881-02e4-4185-af92-357d0a9d9cba",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has name', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.name).to.eql(pm.environment.get(\"customerName4\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel.surname).to.eql(pm.environment.get(\"customerSurname4\"));\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(pm.environment.get(\"userId4\"));\r",
+									"    //pm.expect(jsonData.data.CustomerReadModel.userId).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:4) {\r\n        name, \r\n        surname, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.6 query/CustomerReadModels get customers data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f779b953-a3e5-4e36-8abe-0beaabe2d9ba",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"    pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"    pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"//check customer 1 data\r",
+									"pm.test('has name1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('name');\r",
+									"});\r",
+									"pm.test(\"name1 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].name).to.eql(pm.environment.get(\"customerName4\"));\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].name).to.contain(\"name\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has surname1', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('surname');\r",
+									"});\r",
+									"pm.test(\"surname1 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].surname).to.eql(pm.environment.get(\"customerSurname4\"));\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].surname).to.contain(\"surname\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has userId4', function() {\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0]).to.have.property('userId');\r",
+									"});\r",
+									"pm.test(\"userId4 response is correct test\", function () {\r",
+									"    //pm.expect(jsonData.data.CustomerReadModels[0].userId).to.eql(pm.environment.get(\"userId1\"));\r",
+									"    pm.expect(jsonData.data.CustomerReadModels[0].userId).to.eql(pm.environment.get(\"userId4\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels \r\n  {\r\n        name, \r\n        surname, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.7 mutation/DeleteCustomer delete customer id:4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a60da5b4-e54f-42c2-b371-54af334197dd",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteCustomer', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteCustomer');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteCustomer response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteCustomer).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteCustomer(input: { \r\n        id: {{customerId4}},       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.8 query/CustomerReadModel get customerId:4 (expect deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b00b693-4177-4cd2-8ae5-e8493e2741a0",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModel', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModel');\r",
+									"});\r",
+									"\r",
+									"pm.test('has null', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModel).to.eql(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModel (id:4) {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.9 query/CustomerReadModels get customers (expect deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8fabc298-2784-4377-997d-9949fb2aa56d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"pm.test('has []', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModels).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels \r\n  {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.10 {{url}}/auth/sign-in Master Admin account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2aa03980-de4f-426a-8521-460de0c0d164",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);\r",
+									"\r",
+									"pm.test('Has accessToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('accessToken');\r",
+									"});\r",
+									"pm.test('Has expiresIn', function() {\r",
+									"  pm.expect(jsonData).to.have.property('expiresIn');\r",
+									"});\r",
+									"pm.test('Has refreshToken', function() {\r",
+									"  pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"});\r",
+									"pm.test('Has tokenType', function() {\r",
+									"  pm.expect(jsonData).to.have.property('tokenType');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"clientId\": \"{{clientID}}\",\r\n \"username\": \"admin@theagilemonkeys.com\",\r\n \"password\": \"Admin.2020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/sign-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18.11 mutation/DeleteUser delete user id:4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dbce2fd4-3125-4bb6-b34c-8cb7b14f474b",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has DeleteUser', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('DeleteUser');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DeleteUser response is correct test\", function () {\r",
+									"  pm.expect(jsonData.data.DeleteUser).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  DeleteUser(input: { \r\n        username: \"userId{{randomNo4}}@theagilemonkeys.com\",       \r\n    }),\r\n}",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "19. CleanUp check",
+			"item": [
+				{
+					"name": "19.1 query/CustomerReadModels check all customers deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6949edb-5a8b-4f4d-992b-14f7872e662e",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has CustomerReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('CustomerReadModels');\r",
+									"});\r",
+									"\r",
+									"pm.test('has []', function() {\r",
+									"  pm.expect(jsonData.data.CustomerReadModels).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    CustomerReadModels {\r\n        name, \r\n        surname, \r\n        photoUrl, \r\n        userId\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "19.2 query/UserReadModels check all users deleted except admin@theagilemonkeys.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4894bcdf-d9f6-4b36-aa29-f3660e33f4c7",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test('has data', function() {\r",
+									"  pm.expect(jsonData).to.have.property('data');\r",
+									"});\r",
+									"pm.test('has UserReadModels', function() {\r",
+									"  pm.expect(jsonData.data).to.have.property('UserReadModels');\r",
+									"});\r",
+									"\r",
+									"//check customer 1 data\r",
+									"pm.test('has id1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"id response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].id).to.eql(\"admin@theagilemonkeys.com\");\r",
+									"});\r",
+									"\r",
+									"pm.test('has role1', function() {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0]).to.have.property('role');\r",
+									"});\r",
+									"    pm.test(\"surname1 response is correct test\", function () {\r",
+									"    pm.expect(jsonData.data.UserReadModels[0].role).to.eql(\"Admin\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    UserReadModels {\r\n        id, \r\n        role\r\n    }\r\n}    ",
+								"variables": ""
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "90bedadc-7b9d-47fb-86ad-07a354e81c9c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "20dcbc00-7cda-470a-8a37-7050792e6ad9",
+				"type": "text/javascript",
+				"exec": [
+					"setTimeout(()=>{}, [500]);"
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
