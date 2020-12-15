@@ -75,7 +75,7 @@ These files can also be run inside of Newman CLI, which is what I generally use 
 	It appears ChangeUserRole does not support validation. I can enter any text into role field and it will return 'True' for ChangeUserRole inside the response body. 
 	###### REF: 14.2, 14.3, 14.4, 14.5
 
-	4. Username is used on mutation 'SaveUser' , id is used on queries inside 'UserReadModel', schema makes no reference to username, should the mutations tab list required 	arguments also?
+	4. Username is used on mutation 'SaveUser' , id is used on queries inside 'UserReadModel', schema makes no reference to username, should the mutations tab list required arguments also?
 	###### REF: 2.1, 3.1
 
 	5. I can in theory update user role using ChangeUserRole, but not id/username or password through SaveUser? 
