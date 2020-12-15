@@ -72,14 +72,17 @@ These files can also be run inside of Newman CLI, which is what I generally use 
 	1. photoUrl key is not accepted inside SaveCustomer mutation, photo is accepted.
 	 REF 5.1, 5.2, 5.3, 6.1, 6.2, 6.3
 
-	2. On prod for query CustomerReadModel an empty value is returned for photo/photoUrl, on dev "test-qa-judeshiels-dev-app/1/photo.jpg" or variant is returned. 
+	2. On prod for query CustomerReadModel an empty value is returned for photo/photoUrl, 
+	on dev "test-qa-judeshiels-dev-app/1/photo.jpg" or variant is returned. 
 	 REF: 6.1, 6.2, 6.3
 
 	3. When running UserReadModel on user with an updated role Admin->User, null result is returned.
-	It appears ChangeUserRole does not support validation. I can enter any text into role field and it will return 'True' for ChangeUserRole inside the response body. 
+	It appears ChangeUserRole does not support validation. I can enter any text into role field 
+	and it will return 'True' for ChangeUserRole inside the response body. 
 	 REF: 14.2, 14.3, 14.4, 14.5
 
-	4. Username is used on mutation 'SaveUser' , id is used on queries inside 'UserReadModel', schema makes no reference to username, should the mutations tab list required arguments also?
+	4. Username is used on mutation 'SaveUser' , id is used on queries inside 'UserReadModel', 
+	schema makes no reference to username, should the mutations tab list required arguments also?
 	 REF: 2.1, 3.1
 
 	5. I can in theory update user role using ChangeUserRole, but not id/username or password through SaveUser? 
@@ -90,7 +93,8 @@ These files can also be run inside of Newman CLI, which is what I generally use 
 	6. id should be displayed in CustomerReadModel/CustomerReadModels response body same as userId?
 	 REF: 6.1, 7.1
 
-	7. Ordering is not implemented inside schema, this means using Postman tests I needed to descope tests or modify test assertions to be less specific.
+	7. Ordering is not implemented inside schema, this means using Postman tests I needed to descope tests 
+	or modify test assertions to be less specific.
 
 ### Section 4. Expected test results
 	55 requests contained in Postman Suite
