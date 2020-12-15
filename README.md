@@ -89,6 +89,7 @@ These files can also be run inside of Newman CLI, which is what I generally use 
 	7. Ordering is not implemented inside schema, this means using Postman tests I needed to descope tests or modify test assertions to be less specific.
 
 # Section 4. Expected test results
-55 requests contained in Postman Suite
-Dev environment tests - expect 324 tests passed 23 tests failed 
-Prod environment tests - expect 321 tests passed 26 tests failed - for failed test examples, see Issues noted above.
+	#### 55 requests contained in Postman Suite
+	#### Dev environment tests - expect 324 tests passed 23 tests failed 
+	#### Prod environment tests - expect 321 tests passed 26 tests failed
+	#### for failed test examples, see Issues noted above.
