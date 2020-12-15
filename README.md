@@ -1,4 +1,4 @@
-#### READ FIRST: REF codes are direct references to Postman test suite, where folders and requests are indexed clearly.
+#### READ FIRST: REF codes are direct references to Postman test collection 'TheAgileMonkeys API TESTS.postman_collection.json', where folders and requests are indexed clearly.
 
 ### Section 1. Meeting acceptance criteria
 
