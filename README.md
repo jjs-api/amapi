@@ -4,7 +4,8 @@
 
 #### The acceptance criteria that the API must meet are the following:
 
-**• A user can:**
+	• A user can:
+	
 	◦ List all customers in the database. ↓
 	 REF: 7. Query/CustomerReadModels/onCreate
 
@@ -15,6 +16,7 @@
 	 REF: 5. Mutations/SaveCustomer/Create
 
 	▪ A customer should have (an asterisk indicates that it is a required field): ↓
+
 	 REF: 6. Queries/CustomerReadModel/onCreate & 7. Query/CustomerReadModels/onCreate 
 	▪ * name,
 	▪ * surname,
@@ -40,6 +42,7 @@
 	 REF: 11. Mutations/DeleteCustomer/Delete
 
 	• An admin can also:   
+	
 	◦ Manage users:
 	▪ Create users. ↓
 	 REF: 2. Mutations/Create/SaveUser
