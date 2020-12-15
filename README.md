@@ -1,6 +1,6 @@
-### READ FIRST: REF codes are direct references to Postman test suite, where folders and requests are indexed clearly.
+#### READ FIRST: REF codes are direct references to Postman test suite, where folders and requests are indexed clearly.
 
-# Section 1. Meeting acceptance criteria
+### Section 1. Meeting acceptance criteria
 
 #### The acceptance criteria that the API must meet are the following:
 
@@ -52,7 +52,7 @@
 	###### REF: 14. ChangeUserRole/Tests
 
 
-# Section 2. Automated testing using Postman.
+### Section 2. Automated testing using Postman.
 The reason for selecting Postman for this task, is I've being using it for API testing since 2014 so I have a large amount of experience using  it. In turn I can work very fast with it, and create, organise and manage a lot of requests and automaated tests simultaneously on different environments without tripping myself up. 
 
 I have exported the Postman json files for tests, dev encironment and prod environment. I have added a delay of 500ms, I've noticed especially on prod environment a delay is required for the tests to run smoothly. This manifests mostly on REF: 18.5
@@ -64,7 +64,7 @@ prod.postman_environment. json -----> Import into environments
 
 These files can also be run inside of Newman CLI, which is what I generally use for running API test Jenkins jobs for example. This needs a node.js install.
 
-# Section 3. Issues noted: 
+### Section 3. Issues noted: 
 	1. photoUrl key is not accepted inside SaveCustomer mutation, photo is accepted.
 	###### REF 5.1, 5.2, 5.3, 6.1, 6.2, 6.3
 
@@ -88,7 +88,7 @@ These files can also be run inside of Newman CLI, which is what I generally use 
 
 	7. Ordering is not implemented inside schema, this means using Postman tests I needed to descope tests or modify test assertions to be less specific.
 
-# Section 4. Expected test results
+### Section 4. Expected test results
 	#### 55 requests contained in Postman Suite
 	#### Dev environment tests - expect 324 tests passed 23 tests failed 
 	#### Prod environment tests - expect 321 tests passed 26 tests failed
