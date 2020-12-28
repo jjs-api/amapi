@@ -2,7 +2,8 @@ let helper63 = require('./helper.ts');
 const query63 = require('supertest')(helper63.baseUrl.url);
 const expect63 = require('chai').expect;
 
-describe("6.3 Test /graphql CustomerReadModel create response id3", () => {
+describe("6.3 Test /graphql CustomerReadModel create response id3", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send query 'CustomerReadModel', " + 
     "WHEN posting (id:3), "+
     "THEN response with expected 'name' value is displayed",

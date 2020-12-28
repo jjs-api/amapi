@@ -2,7 +2,8 @@ let helper152 = require('./helper.ts');
 const query152 = require('supertest')(helper152.baseUrl.url);
 const expect152 = require('chai').expect;
 
-describe("15.2 Test /graphql UserReadModel New Password check", () => {
+describe("15.2 Test /graphql UserReadModel New Password check", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send query 'UserReadModel', " + 
     "WHEN posting {id:userId1@theagilemonkeys.com}, "+
     "THEN response with expected 'id' value is displayed",

@@ -2,7 +2,8 @@ let helper144 = require('./helper.ts');
 const query144 = require('supertest')(helper144.baseUrl.url);
 const expect144 = require('chai').expect;
 
-describe("14.4 Test /graphql SaveUser create request #1", () => {
+describe("14.4 Test /graphql SaveUser create request #1", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send mutation 'ChangeUser', "+ 
     "WHEN posting input {username:'userId1@theagilemonkeys.com',password:'Admin.2020',role:'Admin'} as per schema, "+
     "Changing role from User back to Admin, "+

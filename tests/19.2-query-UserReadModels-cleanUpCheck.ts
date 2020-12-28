@@ -2,7 +2,8 @@ let helper192 = require('./helper.ts');
 const query192 = require('supertest')(helper192.baseUrl.url);
 const expect192 = require('chai').expect;
 
-describe("19.2 Test /graphql UserReadModels response onDelete", () => {
+describe("19.2 Test /graphql UserReadModels response onDelete", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send query 'UserReadModels', " + 
     "WHEN posting {id,role} after delete, "+
     "THEN response with expected 'admin@theagilemonkeys.com' value is displayed",

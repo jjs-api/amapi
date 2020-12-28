@@ -2,7 +2,8 @@ let helper151 = require('./helper.ts');
 const query151 = require('supertest')(helper151.baseUrl.url);
 const expect151 = require('chai').expect;
 
-describe("15.1 Test /graphql SaveUser Change Password Attempt", () => {
+describe("15.1 Test /graphql SaveUser Change Password Attempt", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send mutation 'SaveUser', "+ 
     "WHEN posting input {username, password, role} as per schema, "+
     "With updated password, "+

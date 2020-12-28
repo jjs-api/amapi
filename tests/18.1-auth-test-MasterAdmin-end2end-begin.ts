@@ -3,7 +3,8 @@ const request181 = require('supertest')(helper181.baseUrl.url);
 const expect181 = require('chai').expect;
 const fsAuth181 = require('fs');
 
-describe("18.1 POST /auth/sign-in", () => {
+describe("18.1 POST /auth/sign-in", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send login request ", done => { 
     request181.post('/auth/sign-in')
       .send({ 

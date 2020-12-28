@@ -2,7 +2,8 @@ let helper23 = require('./helper.ts');
 const query23 = require('supertest')(helper23.baseUrl.url);
 const expect23 = require('chai').expect;
 
-describe("2.3 Test /graphql SaveUser create request userId3", () => {
+describe("2.3 Test /graphql SaveUser create request userId3", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send mutation 'SaveUser', "+ 
     "WHEN posting input {username, password, role} as per schema, "+
     "THEN response with expected 'true' value is displayed",

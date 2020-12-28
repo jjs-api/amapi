@@ -3,7 +3,8 @@ const request = require('supertest')(helper.baseUrl.url);
 const expect = require('chai').expect;
 const fsAuth = require('fs');
 
-describe("1.1 POST /auth/sign-in", () => {
+describe("1.1 POST /auth/sign-in", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send login request, "+
   "WHEN posting input {clientId, username, password}, "+
   "THEN response with expected properties are displayed, "+

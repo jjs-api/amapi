@@ -2,7 +2,8 @@ let helper145 = require('./helper.ts');
 const query145 = require('supertest')(helper145.baseUrl.url);
 const expect145 = require('chai').expect;
 
-describe("14.5 Test /graphql UserReadModel after role revert User to Admin", () => {
+describe("14.5 Test /graphql UserReadModel after role revert User to Admin", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send query 'UserReadModel', " + 
     "WHEN posting {id:userId1@theagilemonkeys.com}, "+
     "THEN response with expected 'id' value is displayed",

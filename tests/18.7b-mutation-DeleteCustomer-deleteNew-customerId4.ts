@@ -2,7 +2,8 @@ let helper187b = require('./helper.ts');
 const query187b = require('supertest')(helper187b.baseUrl.url);
 const expect187b = require('chai').expect;
 
-describe("18.7b Test /graphql DeleteCustomer request id4", () => {
+describe("18.7b Test /graphql DeleteCustomer request id4", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send mutation 'DeleteCustomer', "+ 
     "WHEN posting {id: 4} as per schema, "+
     "THEN response with expected 'true' value is displayed",

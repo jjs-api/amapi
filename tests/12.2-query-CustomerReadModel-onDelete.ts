@@ -2,7 +2,8 @@ let helper122 = require('./helper.ts');
 const query122 = require('supertest')(helper122.baseUrl.url);
 const expect122 = require('chai').expect;
 
-describe("12.2 Test /graphql CustomerReadModel response onDelete id2", () => {
+describe("12.2 Test /graphql CustomerReadModel response onDelete id2", function() {
+  beforeEach(done => setTimeout(done, 500))
   it("GIVEN I send query 'CustomerReadModel', " + 
     "WHEN posting (id:2) after delete, "+
     "THEN response with expected 'null' value is displayed",
