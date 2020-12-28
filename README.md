@@ -15,9 +15,10 @@ To run test scripts:
 	npx mocha *.ts
 		
 Expected results on dev:
-	105 passing
+	104 passing
   	4 failing
 	
 Expected results on prod:
-	
+	92 passing
+  	16 failing
 	
