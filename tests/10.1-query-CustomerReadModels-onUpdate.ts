@@ -3,13 +3,26 @@ const query101 = require('supertest')(helper101.baseUrl.url);
 const expect101 = require('chai').expect;
 
 describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
+  var idToken = null;
   beforeEach(done => setTimeout(done, 500))
+  beforeEach(function(done) {
+    query101.post('/auth/sign-in')
+      .send({ 
+      clientId: helper101.clientId.id,
+      username: helper101.username.un,
+      password: helper101.password.pw 
+    })
+    .end(function(err, res) {
+      idToken = res.body.idToken;
+      done();
+    });
+});
   it("GIVEN I send query 'CustomerReadModels', " + 
     "WHEN posting body {name,surname,photoUrl,userId}, "+
     "THEN response with expected 'name' value is displayed inside array[0]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -26,7 +39,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'surname' value is displayed inside array[0]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -43,7 +56,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'photoUrl' value is displayed inside array[0]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -60,7 +73,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'userId' value is displayed inside array[0]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -77,7 +90,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'name' value is displayed inside array[1]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -94,7 +107,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'surname' value is displayed inside array[1]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -111,7 +124,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'photoUrl' value is displayed inside array[1]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -128,7 +141,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'userId' value is displayed inside array[1]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -145,7 +158,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'name' value is displayed inside array[2]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -162,7 +175,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'surname' value is displayed inside array[2]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -179,7 +192,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'photoUrl' value is displayed inside array[2]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);
@@ -196,7 +209,7 @@ describe("10.1 Test /graphql CustomerReadModels response onUpdate", function() {
     "THEN response with expected 'userId' value is displayed inside array[2]",
     done => { 
       query101.post('/graphql')
-      .set("Authorization", "Bearer " + helper101.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{CustomerReadModels {name,surname,photoUrl,userId}}'})
       .end(function(err, res) {
       if (err) return done(err);

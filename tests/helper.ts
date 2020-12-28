@@ -8,13 +8,13 @@ module.exports = {
         //dev
         "url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
         //prod
-        //"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod"
+        //"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod",
     },
     clientId: {
         //dev
         "id": "q69csigu8dnp4106sdokq0l6n",
         //prod
-        //"id": "4p57q2erkqvv515r41hls93lor"
+        //"id": "4p57q2erkqvv515r41hls93lor",
 
     },
     username: {

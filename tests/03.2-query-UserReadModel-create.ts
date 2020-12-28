@@ -3,13 +3,27 @@ const query32 = require('supertest')(helper32.baseUrl.url);
 const expect32 = require('chai').expect;
 
 describe("3.2 Test /graphql UserReadModel create response userId2", function() {
+  var idToken = null;
   beforeEach(done => setTimeout(done, 500))
+  beforeEach(function(done) {
+    query32.post('/auth/sign-in')
+      .send({ 
+      clientId: helper32.clientId.id,
+      username: helper32.username.un,
+      password: helper32.password.pw 
+    })
+    .end(function(err, res) {
+      idToken = res.body.idToken;
+      done();
+    });
+});
+
   it("GIVEN I send query 'UserReadModel', " + 
     "WHEN posting {id:userId2@theagilemonkeys.com}, "+
     "THEN response with expected 'id' value is displayed",
     done => { 
       query32.post('/graphql')
-      .set("Authorization", "Bearer " + helper32.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{UserReadModel (id:"userId2@theagilemonkeys.com") {id,role}}'})
       .end(function(err, res) {
       if (err) return done(err)
@@ -28,7 +42,7 @@ describe("3.2 Test /graphql UserReadModel create response userId2", function() {
     "THEN response with expected 'role' value is displayed",
     done => { 
       query32.post('/graphql')
-      .set("Authorization", "Bearer " + helper32.token.at) 
+      .set("Authorization", "Bearer " + idToken) 
       .send({query: '{UserReadModel (id:"userId2@theagilemonkeys.com") {id,role}}'})
       .end(function(err, res) {
       if (err) return done(err) 

@@ -1,5 +1,5 @@
 let helper = require('./helper.ts');
-const request = require('supertest')(helper.baseUrl.url);
+const query = require('supertest')(helper.baseUrl.url);
 const expect = require('chai').expect;
 const fsAuth = require('fs');
 
@@ -10,7 +10,7 @@ describe("1.1 POST /auth/sign-in", function() {
   "THEN response with expected properties are displayed, "+
   "expected properties are 'accessToken', 'idToken', 'refreshToken', 'expiresIn' + 'tokenType'",
    done => { 
-    request.post('/auth/sign-in')
+    query.post('/auth/sign-in')
       .send({ 
       clientId: helper.clientId.id,
       username: helper.username.un,
@@ -19,10 +19,6 @@ describe("1.1 POST /auth/sign-in", function() {
     .expect(200)
     .expect((res) => {
       console.log(res.body)
-      var idToken = res.body.idToken 
-      // write token to file here
-      fsAuth.writeFile('token.txt', idToken, (err) => console.error(err))
-      return idToken
     })
       .end(function(err, res) {
       if (err) return done(err)
@@ -37,7 +33,7 @@ describe("1.1 POST /auth/sign-in", function() {
       .to.have.property('expiresIn')
       expect(res.body)
       .to.have.property('tokenType')
-      done();     
+      done();   
     })
   });
 });

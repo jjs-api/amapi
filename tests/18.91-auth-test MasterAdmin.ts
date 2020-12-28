@@ -12,13 +12,6 @@ describe("18.91 POST /auth/sign-in", function() {
       username: helper1891.username.un,
       password: helper1891.password.pw 
     })
-    .expect(200)
-    .expect((res) => {
-      var idToken = res.body.idToken 
-      // write token to file here
-      fsAuth1891.writeFile('token.txt', idToken, (err) => console.error(err))
-      return idToken
-    })
       .end(function(err, res) {
       if (err) return done(err);
       done();     
