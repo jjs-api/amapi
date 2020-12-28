@@ -4,18 +4,18 @@
 
 1. Install steps:
 	1. Install node.js
-	2. create new folder for tests
-	3. ensure you copy following files from repo: 'tsconfig.json' + /tests folder
-	4. ensure you run 'npm init -y' inside newly created folder
-	5. run 'npm install supertest mocha chai --save-dev' inside newly created folder
-	6. run 'npm i --save-dev @types/mocha' inside newly created folder
-	7. run 'npm i --save-dev @types/node' inside newly created folder
+	2. create new folder for tests to reside
+	3. ensure you copy following files from github repo: 'tsconfig.json' + /tests folder into root of newly created folder
+	4. From command line ensure you run 'npm init -y' inside newly created folder
+	5. From command line run 'npm install supertest mocha chai --save-dev' inside newly created folder
+	6. From command line run 'npm i --save-dev @types/mocha' inside newly created folder
+	7. From command line run 'npm i --save-dev @types/node' inside newly created folder
 	
 	
 2. Test details: 
 	- Tests contain 58 indexed test files
 	- 1 helper class
-	- 2 .txt files (for writing tokens to)
+	- 2 .txt files (for writing tokens to, deprecated)
 	
 3. Switching from dev to prod env:
 	- In helper class comment/uncomment baseUrl and clientId to desired corresponding environment inside method.exports. 
@@ -53,7 +53,7 @@
 	    }
 4. To run test scripts:
 	- cd to tests folder
-	- npx mocha *.ts
+	- From command line or IDE terminal run npx mocha *.ts
 		
 5. Expected results on dev:
 	- 104 passing
