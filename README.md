@@ -26,7 +26,5 @@ Tests created in node with Supertest, Mocha, Chai and Typescript with in-built B
   	- 16 failing
 	
 - Known test issue: 
-	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman.
-	- I investigated some potential solutions, but nothing definitive as yet. 
-	- This sometimes causes tests to return errors. 
+	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman. I investigated some potential solutions, but nothing definitive as yet. This sometimes causes tests to return errors. 
 	
