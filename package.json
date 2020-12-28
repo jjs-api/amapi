@@ -1,0 +1,22 @@
+{
+  "name": "amapi",
+  "version": "1.0.0",
+  "description": "graphql api tests",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha ./tests",
+    "start": "node index.js"
+  },
+  "author": "js",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^8.2.0",
+    "@types/node": "^14.14.16",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "supertest": "^6.0.1"
+  }
+}
