@@ -3,12 +3,14 @@
 - These tests were created in line with the previous Postman collection I delivered, containing identical indexing with some minor additions.
 
 - Install steps:
-	- create new folder for tests
-	- ensure run 'npm init -y'
-	- run 'npm install supertest mocha chai --save-dev'
-	- run 'npm i --save-dev @types/mocha'
-	- run 'npm i --save-dev @types/node'
-	- ensure you copy following files from repo: 'tsconfig.json' + /tests folder
+	1. Install node.js
+	2. create new folder for tests
+	3. ensure you copy following files from repo: 'tsconfig.json' + /tests folder
+	4. ensure you run 'npm init -y' inside newly created folder
+	5. run 'npm install supertest mocha chai --save-dev' inside newly created folder
+	6. run 'npm i --save-dev @types/mocha' inside newly created folder
+	7. run 'npm i --save-dev @types/node' inside newly created folder
+	
 	
 - Test details: 
 	- Tests contain 58 indexed test files
