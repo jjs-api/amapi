@@ -1,4 +1,6 @@
-### Tests created with Supertest, Mocha, Chai and Typescript with in-built BDD assertions. 
+### Indexed tests created with Supertest, Mocha, Chai and Typescript with in-built BDD assertions. 
+
+- These tests were created in line with the previous Postman collection I delivered, containing identical indexing with some minor additions.
 
 - Install steps:
 	- create new folder for tests
