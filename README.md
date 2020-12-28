@@ -1,11 +1,12 @@
 ### Tests created with Supertest, Mocha, Chai and Typescript with in-built BDD assertions. 
 
 - Install steps:
-	- ensure run npm init -y
-	- npm install supertest mocha chai --save-dev
-	- npm i --save-dev @types/mocha
-	- npm i --save-dev @types/node
-	- copy files from repo "tsconfig.json" + /tests folder
+	- create new folder for tests
+	- ensure run 'npm init -y'
+	- run 'npm install supertest mocha chai --save-dev'
+	- run 'npm i --save-dev @types/mocha'
+	- run 'npm i --save-dev @types/node'
+	- ensure you copy following files from repo 'tsconfig.json' + /tests folder
 	
 - Test details: 
 	- Tests contain 58 indexed test files
