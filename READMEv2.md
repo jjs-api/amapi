@@ -27,11 +27,10 @@
 - Expected results on dev:
 	- 104 passing
   	- 4 failing
+	- expected failing tests: 15.1, 14.4, 14.3, 14.2 
 	
 - Expected results on prod:
 	- 92 passing
   	- 16 failing
-	
-- Known test issue: 
-	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman. I investigated some potential solutions, but nothing definitive as yet. The effect is the tests can intermittently return unexpected errors. 
+	- expected failing tests as above plus photoUrl issue which does not occur same as on dev, impacted: 10.1 x 3, 9.3, 9.2, 9.1 , 7.1 x 3, 6.3, 6.2, 6.1.
 	
