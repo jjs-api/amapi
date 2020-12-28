@@ -20,7 +20,7 @@
 3. Switching from dev to prod env:
 	- In helper class comment/uncomment baseUrl and clientId to desired corresponding environment inside method.exports. 
 	```
-	####dev environment on/prod off:
+	dev environment on/prod off:
 	module.exports = {
 		   baseUrl: {
 			//dev
@@ -35,7 +35,8 @@
 			//"id": "4p57q2erkqvv515r41hls93lor",
 		    }
 	    }
-	  ####prod on/dev off  
+	    
+	  prod on/dev off  
 	  module.exports = {
 		     baseUrl: {
 			//dev
@@ -50,7 +51,6 @@
 			"id": "4p57q2erkqvv515r41hls93lor",
 		    }
 	    }
-
 4. To run test scripts:
 	- cd to tests folder
 	- npx mocha *.ts
