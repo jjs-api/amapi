@@ -6,7 +6,7 @@
 	- run 'npm install supertest mocha chai --save-dev'
 	- run 'npm i --save-dev @types/mocha'
 	- run 'npm i --save-dev @types/node'
-	- ensure you copy following files from repo 'tsconfig.json' + /tests folder
+	- ensure you copy following files from repo: 'tsconfig.json' + /tests folder
 	
 - Test details: 
 	- Tests contain 58 indexed test files
