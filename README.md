@@ -9,6 +9,9 @@ Test details:
 	Tests contain 58 indexed test files
 	1 helper class
 	2 .txt files (for writing tokens to)
+	
+Switching from dev to prod env:
+	In helper class comment/uncomment baseUrl and clientId to desired corresponding environment inside method.exports. 
 
 To run test scripts:
 	cd to tests folder
@@ -21,4 +24,9 @@ Expected results on dev:
 Expected results on prod:
 	92 passing
   	16 failing
+	
+Known test issue: 
+	The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman.
+	I investigated some potential solutions, but nothing definitive as yet. 
+	This causes tests sometimes to return errors. 
 	
