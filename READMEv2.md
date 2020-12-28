@@ -19,25 +19,25 @@
 	
 3. Switching from dev to prod env:
 	- In helper class comment/uncomment baseUrl and clientId to desired corresponding environment inside method.exports. 
-	
-	```dev environment on/prod off:
+	```
+	dev environment on/prod off:
 	module.exports = {
-	    baseUrl: {
-		//dev
-		"url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
-		//prod
-		//"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod",
-	    },
-	    clientId: {
-		//dev
-		"id": "q69csigu8dnp4106sdokq0l6n",
-		//prod
-		//"id": "4p57q2erkqvv515r41hls93lor",
+		   baseUrl: {
+			//dev
+			"url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
+			//prod
+			//"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod",
+		    },
+		    clientId: {
+			//dev
+			"id": "q69csigu8dnp4106sdokq0l6n",
+			//prod
+			//"id": "4p57q2erkqvv515r41hls93lor",
+		    }
 	    }
-	    
 	  prod on/dev off  
 	  module.exports = {
-		  baseUrl: {
+		     baseUrl: {
 			//dev
 			//"url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
 			//prod
@@ -48,7 +48,8 @@
 			//"id": "q69csigu8dnp4106sdokq0l6n",
 			//prod
 			"id": "4p57q2erkqvv515r41hls93lor",
-		    }```
+		    }
+	    }
 
 4. To run test scripts:
 	- cd to tests folder
