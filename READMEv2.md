@@ -31,5 +31,5 @@
   	- 16 failing
 	
 - Known test issue: 
-	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman. I investigated some potential solutions, but nothing definitive as yet. The effect is tests can intermittently return errors. 
+	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman. I investigated some potential solutions, but nothing definitive as yet. The effect is the tests can intermittently return unexpected errors. 
 	
