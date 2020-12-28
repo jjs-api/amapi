@@ -2,34 +2,66 @@
 
 - These tests were created in line with the previous Postman collection I delivered, containing identical indexing with some minor additions.
 
-- Install steps:
-	- create new folder for tests
-	- ensure run 'npm init -y'
-	- run 'npm install supertest mocha chai --save-dev'
-	- run 'npm i --save-dev @types/mocha'
-	- run 'npm i --save-dev @types/node'
-	- ensure you copy following files from repo: 'tsconfig.json' + /tests folder
+1. Install steps:
+	1. Install node.js
+	2. create new folder for tests to reside
+	3. ensure you copy following files from github repo: 'tsconfig.json' + /tests folder into root of newly created folder
+	4. From command line ensure you run 'npm init -y' inside newly created folder
+	5. From command line run 'npm install supertest mocha chai --save-dev' inside newly created folder
+	6. From command line run 'npm i --save-dev @types/mocha' inside newly created folder
+	7. From command line run 'npm i --save-dev @types/node' inside newly created folder
 	
-- Test details: 
+	
+2. Test details: 
 	- Tests contain 58 indexed test files
 	- 1 helper class
-	- 2 .txt files (for writing tokens to)
+	- 2 .txt files (for writing tokens to, deprecated)
 	
-- Switching from dev to prod env:
+3. Switching from dev to prod env:
 	- In helper class comment/uncomment baseUrl and clientId to desired corresponding environment inside method.exports. 
-
-- To run test scripts:
+	```
+	dev environment on/prod off:
+	module.exports = {
+		   baseUrl: {
+			//dev
+			"url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
+			//prod
+			//"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod",
+		    },
+		    clientId: {
+			//dev
+			"id": "q69csigu8dnp4106sdokq0l6n",
+			//prod
+			//"id": "4p57q2erkqvv515r41hls93lor",
+		    }
+	    }
+	    
+	  prod on/dev off  
+	  module.exports = {
+		     baseUrl: {
+			//dev
+			//"url": "https://kq5xvr42bi.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-dev",
+			//prod
+			"url": "https://dudq8wv4c5.execute-api.us-east-1.amazonaws.com/test-qa-judeshiels-prod",
+		    },
+		    clientId: {
+			//dev
+			//"id": "q69csigu8dnp4106sdokq0l6n",
+			//prod
+			"id": "4p57q2erkqvv515r41hls93lor",
+		    }
+	    }
+4. To run test scripts:
 	- cd to tests folder
-	- npx mocha *.ts
+	- From command line or IDE terminal run npx mocha *.ts
 		
-- Expected results on dev:
+5. Expected results on dev:
 	- 104 passing
   	- 4 failing
+	- expected failing tests: 15.1, 14.4, 14.3, 14.2 
 	
-- Expected results on prod:
+6. Expected results on prod:
 	- 92 passing
   	- 16 failing
-	
-- Known test issue: 
-	- The tests need a delay added between requests, perhaps 250ms, this is something I could do very easily on Postman. I investigated some potential solutions, but nothing definitive as yet. The effect is the tests can intermittently return unexpected errors. 
+	- expected failing tests as above plus photoUrl issue which does not occur same as on dev, impacted: 10.1 x 3, 9.3, 9.2, 9.1 , 7.1 x 3, 6.3, 6.2, 6.1.
 	
