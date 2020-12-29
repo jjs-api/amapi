@@ -66,7 +66,7 @@
 	
 7. Meeting acceptance criteria
 
-	The acceptance criteria that the API must meet are the following:
+	• The acceptance criteria that the API must meet are the following:
 
 	• A user can:
 	
