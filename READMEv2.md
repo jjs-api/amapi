@@ -1,6 +1,6 @@
 ### Indexed tests created with Supertest, Mocha, Chai and Typescript with in-built BDD assertions. 
 
-- These tests were created in line with the previous Postman collection I delivered, containing identical indexing with some minor additions.
+- Background: These tests were created in line with the previous Postman collection I delivered, containing identical indexing with some minor additions. I followed the previous end2end style of arranging the tests spreading flows across multiple test files, using Chai 'expect' for assertions, these tests could be modified to utilise an afterEach cleanup hook with end2end tests contained inside a single test class. Also I mostly focussed on positive tests, negative testing would be very straightforward to implement using this approach. Supertest is a Super-agent driven library for testing node.js HTTP servers using a fluent API.
 
 1. Install steps:
 	1. Install node.js
@@ -10,7 +10,6 @@
 	5. From command line run 'npm install supertest mocha chai --save-dev' inside newly created folder
 	6. From command line run 'npm i --save-dev @types/mocha' inside newly created folder
 	7. From command line run 'npm i --save-dev @types/node' inside newly created folder
-	
 	
 2. Test details: 
 	- Tests contain 58 indexed test files
