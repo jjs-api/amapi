@@ -117,8 +117,7 @@
 	▪ List users.   ↓
 	 REF: 3. Queries/UserReadModel/onCreate & 4. Query/UserReadModels/onCreate
 	▪ Change admin status.   ↓
-	 REF: 14. ChangeUserRole/Tests 
- 
+	 REF: 14. ChangeUserRole/Tests \n\n
 	 
 	8. Issues noted: 
 	
