@@ -65,9 +65,8 @@
 	- expected failing tests as above plus photoUrl issue which does not occur same as on dev, impacted: 10.1 x 3, 9.3, 9.2, 9.1 , 7.1 x 3, 6.3, 6.2, 6.1.
 	
 7. Meeting acceptance criteria
-### Section 1. Meeting acceptance criteria
 
-#### The acceptance criteria that the API must meet are the following:
+##### The acceptance criteria that the API must meet are the following:
 
 	• A user can:
 	
