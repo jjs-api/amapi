@@ -66,7 +66,7 @@
 	
 7. Meeting acceptance criteria
 
-	• The acceptance criteria that the API must meet are the following:
+	###### The acceptance criteria that the API must meet are the following:
 
 	• A user can:
 	
@@ -117,5 +117,4 @@
 	▪ List users.   ↓
 	 REF: 3. Queries/UserReadModel/onCreate & 4. Query/UserReadModels/onCreate
 	▪ Change admin status.   ↓
-	 REF: 14. ChangeUserRole/Tests	
-	
+	 REF: 14. ChangeUserRole/Tests
