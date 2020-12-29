@@ -4,7 +4,7 @@ const expect21 = require('chai').expect;
 
 describe("2.1 Test /graphql SaveUser create request userId1", function() {
   var idToken = null;
-  beforeEach(done => setTimeout(done, 1500))
+  beforeEach(done => setTimeout(done, 1900))
   beforeEach(function(done) {
     query21.post('/auth/sign-in')
       .send({ 

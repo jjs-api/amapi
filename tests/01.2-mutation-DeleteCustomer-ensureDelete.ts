@@ -4,7 +4,7 @@ const expect12 = require('chai').expect;
 
 describe("1.2 /graphql ensure DeleteCustomer id1 before test run", function() {
   var idToken = null;
-  beforeEach(done => setTimeout(done, 500))
+  beforeEach(done => setTimeout(done, 1500))
   beforeEach(function(done) {
     query12.post('/auth/sign-in')
       .send({ 
