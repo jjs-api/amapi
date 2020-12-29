@@ -161,7 +161,7 @@
 	or modify test assertions to be less specific.
 
 9. Tests run: 
-
+	```
 	  1.1 POST /auth/sign-in
 	    √ GIVEN I send login request, WHEN posting input {clientId, username, password}, THEN response with expected properties are displayed, expected properties are 			'accessToken', 'idToken', 'refreshToken', 'expiresIn' + 'tokenType'
 
