@@ -163,7 +163,7 @@
 9. Tests run: 
 
 	  1.1 POST /auth/sign-in
-	    √ GIVEN I send login request, WHEN posting input {clientId, username, password}, THEN response with expected properties are displayed, expected properties are 'accessToken', 'idToken', 'refreshToken', 'expiresIn' + 'tokenType'
+	    √ GIVEN I send login request, WHEN posting input {clientId, username, password}, THEN response with expected properties are displayed, expected properties are 			'accessToken', 'idToken', 'refreshToken', 'expiresIn' + 'tokenType'
 
 	  1.2 /graphql ensure DeleteCustomer id1 before test run
 	    √ Ensure Customer 'id1' does not exist before test run
@@ -178,7 +178,7 @@
 	    √ Ensure Customer 'id4' does not exist before test run
 
 	  2.1 Test /graphql SaveUser create request userId1
-	    √ "before each" hook for "GIVEN I send mutation 'SaveUser', WHEN posting input {username, password, role} as per schema, THEN response with expected 'true' value is displayed"
+	    √ "before each" hook for "GIVEN I send mutation 'SaveUser', WHEN posting input {username, password, role} as per schema, THEN response with expected 'true' value is 		displayed"
 
 	  2.2 Test /graphql SaveUser create request userId2
 	    √ GIVEN I send mutation 'SaveUser', WHEN posting input {username, password, role} as per schema, THEN response with expected 'true' value is displayed
@@ -233,15 +233,15 @@
 	  7.1 Test /graphql CustomerReadModels response onCreate
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[0]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[0]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[1]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[1]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[2]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[2]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[2]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[2]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[2]
 
 	  8.1 Test /graphql SaveCustomer update request id1
@@ -271,15 +271,15 @@
 	  10.1 Test /graphql CustomerReadModels response onUpdate
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[0]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[0]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[0]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[1]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[1]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[1]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'name' value is displayed inside array[2]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'surname' value is displayed inside array[2]
-	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside array[2]
+	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'photoUrl' value is displayed inside 			array[2]
 	    √ GIVEN I send query 'CustomerReadModels', WHEN posting body {name,surname,photoUrl,userId}, THEN response with expected 'userId' value is displayed inside array[2]
 
 	  11.1 Test /graphql DeleteCustomer request id1
@@ -308,21 +308,21 @@
 	    √ GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com}, THEN response with expected 'role' value is displayed
 
 	  14.2 Test /graphql ChangeUser from Admin to User
-	    1) GIVEN I send mutation 'ChangeUser', WHEN posting input {username:'userId1@theagilemonkeys.com',password:'Admin.2020',role:'User'} as per schema, Changing role from Admin to User,THEN response with expected 'true' value is displayed
+	    1) GIVEN I send mutation 'ChangeUser', WHEN posting input {username:'userId1@theagilemonkeys.com',password:'Admin.2020',role:'User'} as per schema, Changing role 			from Admin to User,THEN response with expected 'true' value is displayed
 
 	  14.3 Test /graphql UserReadModel after role change Admin to User
 	    √ GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com}, THEN response with expected 'id' value is displayed
 	    2) GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com},THEN response with expected 'role' value is displayed
 
 	  14.4 Test /graphql SaveUser create request #1
-	    3) GIVEN I send mutation 'ChangeUser', WHEN posting input {username:'userId1@theagilemonkeys.com',password:'Admin.2020',role:'Admin'} as per schema, Changing role from User back to Admin, THEN response with expected 'true' value is displayed
+	    3) GIVEN I send mutation 'ChangeUser', WHEN posting input {username:'userId1@theagilemonkeys.com',password:'Admin.2020',role:'Admin'} as per schema, Changing role 			from User back to Admin, THEN response with expected 'true' value is displayed
 
 	  14.5 Test /graphql UserReadModel after role revert User to Admin
 	    √ GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com}, THEN response with expected 'id' value is displayed
 	    √ GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com},THEN response with expected 'role' value is displayed
 
 	  15.1 Test /graphql SaveUser Change Password Attempt
-	    4) GIVEN I send mutation 'SaveUser', WHEN posting input {username, password, role} as per schema, With updated password, THEN response with expected 'true' value is displayed 
+	    4) GIVEN I send mutation 'SaveUser', WHEN posting input {username, password, role} as per schema, With updated password, THEN response with expected 'true' value is 		displayed 
 
 	  15.2 Test /graphql UserReadModel New Password check
 	    √ GIVEN I send query 'UserReadModel', WHEN posting {id:userId1@theagilemonkeys.com}, THEN response with expected 'id' value is displayed
