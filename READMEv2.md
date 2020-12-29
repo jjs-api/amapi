@@ -119,7 +119,6 @@
 	▪ Change admin status.   ↓
 	 REF: 14. ChangeUserRole/Tests 
  
-
 	 
 	8. Issues noted: 
 	
@@ -149,6 +148,3 @@
 
 	7. Ordering is not implemented inside schema, this means using Postman tests I needed to descope tests 
 	or modify test assertions to be less specific.
-
-
-
