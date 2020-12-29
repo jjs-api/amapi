@@ -132,7 +132,7 @@
 	 
 	 
 8. Issues noted: 
-	
+	```
 	1. photoUrl key is not accepted inside SaveCustomer mutation, photo is accepted.
 	 REF 5.1, 5.2, 5.3, 6.1, 6.2, 6.3
 
